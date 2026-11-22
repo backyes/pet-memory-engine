@@ -55,8 +55,8 @@
   };
 
   const SCOPES = {
-    core: { label: "21 天核心", note: "1,245 词", test: (w) => w.core },
-    pet: { label: "PET 新增", note: "1,579 词", test: (w) => !w.ket },
+    core: { label: "21 天核心（含 KET）", note: "1,245 词", test: (w) => w.core },
+    pet: { label: "PET 新增（不含 KET）", note: "1,579 词", test: (w) => !w.ket },
     all: { label: "全部词库", note: "3,283 词", test: () => true },
   };
 
@@ -419,12 +419,14 @@
     const due = anchors.filter((a) => a.due).length;
     const words = sceneWords(id);
     const coreWords = words.filter((w) => w.core);
+    const ketAnchors = anchors.filter((a) => a.entry && a.entry.ket).length;
     return {
       id,
       learned,
       mastered,
       due,
       anchors,
+      ketAnchors,
       total: words.length,
       coreTotal: coreWords.length,
       strongTotal: sceneStrongWords(id).length,

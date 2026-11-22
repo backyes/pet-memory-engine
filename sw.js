@@ -1,5 +1,5 @@
 /* 词脉 · offline shell + runtime audio cache */
-const VERSION = "cimai-v1.2.0";
+const VERSION = "cimai-v1.2.2";
 const SHELL = [
   "./",
   "index.html",

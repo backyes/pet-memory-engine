@@ -119,7 +119,7 @@
         </section>`;
 
     const metrics = `<section class="metrics-strip">
-      <div class="metric-cell"><span class="metric-ico">${icon("layers")}</span><div><b>${coverage} <small style="font-size:12px;color:var(--muted);font-weight:400">/ ${totalCore}</small></b><span>核心词已归入场景</span></div></div>
+      <div class="metric-cell"><span class="metric-ico">${icon("layers")}</span><div><b>${coverage} <small style="font-size:12px;color:var(--muted);font-weight:400">/ ${totalCore}</small></b><span>核心词归入场景（含 KET 基础）</span></div></div>
       <div class="metric-cell"><span class="metric-ico">${icon("check")}</span><div><b>${snap.learned}</b><span>已进入记忆库</span></div></div>
       <div class="metric-cell"><span class="metric-ico">${icon("target")}</span><div><b>${snap.mastered}</b><span>稳定掌握（≥ 21 天）</span></div></div>
     </section>`;
@@ -229,9 +229,9 @@
 
     return `<header class="page-head">
       <div><p class="eyebrow">SCENES · 26 个真实情境</p><h1>场景</h1><p>每个场景是一条可以复述的经历：6 个锚词按顺序落在里面，再连同搭配、对比和同场景词群一起复习。</p></div>
-      <div class="head-aside">${coverage} / ${totalCore}<br>核心词已归入场景</div>
+      <div class="head-aside">${coverage} / ${totalCore}<br>核心词归入场景（含 KET）</div>
     </header>
-    <div class="scene-summary-note">${icon("info")}<div><b>先走场景，再进复习。</b>场景速记会带来 6 个新词；它们随后进入 FSRS 队列，在你快忘记时再次出现。场景不是分类，是一条<b>有因果和顺序</b>的线。</div></div>
+    <div class="scene-summary-note">${icon("info")}<div><b>先走场景，再进复习。</b>场景速记会带来 6 个新词；它们随后进入 FSRS 队列，在你快忘记时再次出现。场景不是分类，是一条<b>有因果和顺序</b>的线。<br><span style="color:var(--faint)">场景锚词包含少量 KET 基础词（156 个中 96 个），用来撑起真实情境；严格 PET 新词可在设置里切换词库范围。</span></div></div>
     <div class="scene-toolbar">
       <div class="seg">${filters.map(([id, label, n]) => `<button class="${filter === id ? "active" : ""}" data-action="scene-filter" data-filter="${id}">${label} <span style="opacity:.55">${n}</span></button>`).join("")}</div>
       <div style="display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px">${icon("layers")} ${doneCount} 个场景已完成</div>
@@ -282,7 +282,8 @@
       <div class="sh-meta">
         <span><b>${st.learned}/6</b> 锚词已学</span>
         <span><b>${st.strongTotal}</b> 个强关联词</span>
-        <span><b>${st.coreTotal}</b> 个核心词</span>
+        <span><b>${st.coreTotal}</b> 个核心词（含 KET）</span>
+        <span><b>${st.ketAnchors}</b> 个 KET 基础锚词</span>
         <span>${st.due ? `<b>${st.due}</b> 个到期` : "暂无到期"}</span>
       </div>
     </header>
@@ -406,8 +407,8 @@
     const rows = shown.map(libRow).join("");
 
     return `<header class="page-head">
-      <div><p class="eyebrow">LIBRARY · ${counts.all} 词条</p><h1>词库</h1><p>按场景、掌握度和到期时间查看每一个词。核心词 ${counts.core} 个，已进入记忆库 ${counts.learned} 个。</p></div>
-      <div class="head-aside">${core.sceneCoverage()} 个核心词<br>已归入 26 个场景</div>
+      <div><p class="eyebrow">LIBRARY · ${counts.all} 词条</p><h1>词库</h1><p>按场景、掌握度和到期时间查看每一个词。默认「21 天核心」${counts.core} 个，其中 663 个是 KET 基础词；严格只看 PET 新增请切换下方范围。</p></div>
+      <div class="head-aside">${core.sceneCoverage()} 个核心词<br>已归入 26 个场景（含 KET）</div>
     </header>
     <div class="lib-toolbar">
       <div class="search-box">${icon("search")}<input id="libSearch" type="search" placeholder="搜索单词、中文释义、英文释义…" value="${core.esc(st.q)}" autocomplete="off"><button class="icon-btn sm search-clear" data-action="lib-clear" aria-label="清空搜索">${icon("close")}</button></div>
@@ -419,8 +420,8 @@
         <option value="lapses" ${st.sort === "lapses" ? "selected" : ""}>按错误次数</option>
       </select>
     </div>
-    <div class="lib-summary"><span>筛选后 <b>${total}</b> 个</span><span>词库范围 <b>${st.tier === "core" ? "21 天核心" : st.tier === "pet" ? "PET 新增" : "全部"}</b></span><span>点击任意词查看记忆状态</span></div>
-    <div class="seg" style="margin-bottom:14px;width:max-content">${[["core", "21 天核心"], ["pet", "PET 新增"], ["all", "全部 3,283"]].map(([id, label]) => `<button class="${st.tier === id ? "active" : ""}" data-action="lib-tier" data-tier="${id}">${label}</button>`).join("")}</div>
+    <div class="lib-summary"><span>筛选后 <b>${total}</b> 个</span><span>词库范围 <b>${st.tier === "core" ? "21 天核心（含 KET）" : st.tier === "pet" ? "PET 新增（不含 KET）" : "全部"}</b></span><span>点击任意词查看记忆状态</span></div>
+    <div class="seg" style="margin-bottom:14px;max-width:100%">${[["core", "21 天核心（含 KET）"], ["pet", "纯 PET 新增"], ["all", "全部 3,283"]].map(([id, label]) => `<button class="${st.tier === id ? "active" : ""}" data-action="lib-tier" data-tier="${id}">${label}</button>`).join("")}</div>
     <div class="lib-head-row"><span>单词</span><span>释义</span><span>掌握度</span><span>到期</span><span></span></div>
     ${total ? `<div class="lib-list">${rows}</div>` : emptyState("没有匹配的词", "换一个关键词，或把筛选条件放宽。")}
     ${total > st.limit ? `<div class="load-more"><button class="btn ghost" data-action="lib-load">加载更多 · 还有 ${total - st.limit} 个</button></div>` : ""}`;
@@ -542,13 +543,13 @@
     })();
     const themes = [["auto", "跟随系统"], ["paper", "纸白"], ["night", "夜读"]];
     const scopes = [
-      ["core", "21 天核心", "1,245 个词 · 默认，场景优先"],
-      ["pet", "PET 新增", "1,579 个 PET 新增词"],
-      ["all", "全部词库", "3,283 个词 · 含 KET 基础"],
+      ["core", "21 天核心（含 KET）", "1,245 词 · 582 PET 新增 + 663 KET 基础"],
+      ["pet", "PET 新增（不含 KET）", "1,579 个 PET 独有词 · 严格模式"],
+      ["all", "全部词库", "3,283 个词 · 含 1,704 个 KET 基础"],
     ];
 
     return `<header class="page-head">
-      <div><p class="eyebrow">SETTINGS · 学习参数</p><h1>设置</h1><p>默认值已经按「每天 1 个场景 + 到期复习」调好。想加速或放慢，只改这里。</p></div>
+      <div><p class="eyebrow">SETTINGS · 学习参数</p><h1>设置</h1><p>默认值已经按「每天 1 个场景 + 到期复习」调好。默认核心清单含 663 个 KET 基础词；想严格只看 PET 新增，选「PET 新增」。</p></div>
       <div class="head-aside">本地存储 ${size}<br>${Object.keys(db.cards).length} 个词有学习记录</div>
     </header>
     <div class="settings-grid">
