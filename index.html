@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3efe6">
+  <meta name="description" content="词脉 · 用 26 个真实场景和记忆链，把 PET 核心词汇串成可复述的长期记忆。">
+  <title>词脉 · PET 场景记忆引擎</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#view">跳到主要内容</a>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#/today" aria-label="词脉首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1.4" opacity=".45"/>
+            <circle cx="20" cy="20" r="7.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M20 4v8M20 28v8M4 20h8M28 20h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="2.4" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>词脉</strong>
+          <small>LEXI<span>PULSE</span></small>
+        </span>
+      </a>
+
+      <nav class="topnav" aria-label="主导航">
+        <a href="#/today" data-nav="today">今日</a>
+        <a href="#/scenes" data-nav="scenes">场景</a>
+        <a href="#/library" data-nav="library">词库</a>
+        <a href="#/stats" data-nav="stats">数据</a>
+        <a href="#/settings" data-nav="settings">设置</a>
+      </nav>
+
+      <div class="top-actions">
+        <span class="streak-pill" id="streakPill" title="连续学习天数">
+          <span class="flame" aria-hidden="true">▲</span>
+          <b id="streakValue">0</b>
+        </span>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换深浅色" title="切换深浅色"></button>
+      </div>
+    </header>
+
+    <main id="view" class="view" tabindex="-1"></main>
+
+    <footer class="site-foot">
+      <span>词脉 · PET 场景记忆引擎</span>
+      <span class="dot">·</span>
+      <span id="footStats">本地存储，不上传任何数据</span>
+    </footer>
+  </div>
+
+  <nav class="mobile-nav" aria-label="移动端导航">
+    <a href="#/today" data-nav="today"><span class="nav-icon" data-icon="today"></span><b>今日</b></a>
+    <a href="#/scenes" data-nav="scenes"><span class="nav-icon" data-icon="scenes"></span><b>场景</b></a>
+    <a href="#/library" data-nav="library"><span class="nav-icon" data-icon="library"></span><b>词库</b></a>
+    <a href="#/stats" data-nav="stats"><span class="nav-icon" data-icon="stats"></span><b>数据</b></a>
+    <a href="#/settings" data-nav="settings"><span class="nav-icon" data-icon="settings"></span><b>设置</b></a>
+  </nav>
+
+  <!-- 学习 / 场景速记 -->
+  <section id="study" class="study" hidden aria-modal="true" role="dialog" aria-label="学习会话">
+    <header class="study-bar">
+      <button class="icon-btn study-close" id="studyClose" type="button" aria-label="退出学习"></button>
+      <div class="study-meter">
+        <div class="study-meter-text">
+          <span id="studyMode">复习</span>
+          <span id="studyCount">0 / 0</span>
+        </div>
+        <div class="progress-track"><i id="studyProgress"></i></div>
+      </div>
+      <div class="study-tools">
+        <span class="study-timer" id="studyTimer">0:00</span>
+        <button class="icon-btn" id="studySound" type="button" aria-label="播放发音"></button>
+      </div>
+    </header>
+    <main class="study-stage" id="studyStage"></main>
+    <footer class="study-foot" id="studyFoot"></footer>
+  </section>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" hidden aria-modal="true" role="dialog" aria-label="单词详情"></aside>
+  <div class="modal-wrap" id="modalWrap" hidden>
+    <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+  </div>
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <noscript>
+    <div style="padding:40px;text-align:center;font-family:sans-serif">词脉需要开启 JavaScript 才能运行。</div>
+  </noscript>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/scenes.js"></script>
+  <script src="assets/srs.js"></script>
+  <script src="assets/core.js"></script>
+  <script src="assets/views.js"></script>
+  <script src="assets/study.js"></script>
+  <script src="assets/main.js"></script>
+</body>
+</html>
